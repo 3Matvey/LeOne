@@ -5,22 +5,29 @@
         public Guid ByUserId { get; private set; }
         public Guid TransactionId { get; private set; }
         public TransactionType TransactionType { get; private set; }
-        public byte Mark { get; private set; } // звезды 1-5
+
+        private byte _mark;
+        public byte Mark
+        {
+            get => _mark;
+            private set
+            {
+                if (value < 1 || value > 5)
+                    throw new DomainValidationException("Mark must be 1..5");
+                _mark = value;
+            }
+        }
+
         public string? Description { get; private set; }
 
-        public Review(Guid byUserId, Guid transactionId, TransactionType type, byte mark, string? description, DateTimeOffset now)
+        public Review(Guid byUserId, Guid transactionId, TransactionType type, byte mark, string? description)
+            : base()
         {
-            if (mark is < 1 or > 5) 
-                throw new DomainValidationException("Mark must be 1..5");
-
-            Id = Guid.NewGuid();
             ByUserId = byUserId;
             TransactionId = transactionId;
             TransactionType = type;
             Mark = mark;
-            Description = description?.Trim();
-
-            MarkCreated(now);
+            Description = description;
         }
         public void Edit(byte mark, string? description)
         {

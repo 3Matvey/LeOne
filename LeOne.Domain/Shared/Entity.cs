@@ -4,7 +4,10 @@
     {
         public Guid Id { get; protected set; }
        
-        private protected Entity() { } // for EF Core 
+        private protected Entity() 
+        {
+            Id = Guid.NewGuid();
+        }
 
         // TODO add domain events  
     }

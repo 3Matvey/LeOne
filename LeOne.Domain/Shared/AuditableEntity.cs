@@ -4,11 +4,14 @@
     {
         public DateTimeOffset CreatedAt { get; protected set; }
         public DateTimeOffset? UpdatedAt { get; protected set; }
-        public DateTimeOffset? DeletedAt { get; protected set; }
-        public bool IsDeleted => DeletedAt.HasValue;
+
+        private protected AuditableEntity()
+            : base()
+        {
+            MarkCreated(DateTimeOffset.UtcNow);
+        }
 
         protected void MarkCreated(DateTimeOffset now) => CreatedAt = now;
         public void MarkUpdated(DateTimeOffset now) => UpdatedAt = now;
-        public void SoftDelete(DateTimeOffset now) => DeletedAt = now;
     }
 }

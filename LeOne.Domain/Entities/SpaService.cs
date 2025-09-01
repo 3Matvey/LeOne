@@ -2,43 +2,65 @@
 {
     public class SpaService : AuditableEntity
     {
-        public string Name { get; private set; } = default!;
-        public long PriceInCents { get; private set; }
-        public int DurationMinutes { get; private set; }
+        private string _name = string.Empty;
+        public string Name 
+        {
+            get => _name;
+            private set
+            {
+                if (string.IsNullOrWhiteSpace(value))
+                    throw new DomainValidationException("Name is required");
+
+                _name = value;
+            }
+        }
+
+        private long _priceInCents;
+        public long PriceInCents
+        {
+            get => _priceInCents;
+            private set
+            {
+                if (value < 0)
+                    throw new DomainValidationException("Price must be >= 0");
+
+                _priceInCents = value;
+            }
+        }
+
+        private int _durationMinutes;
+        public int DurationMinutes
+        {
+            get => _durationMinutes;
+            private set
+            {
+                if (value <= 0)
+                    throw new DomainValidationException("Duration must be > 0");
+
+                _durationMinutes = value;
+            }
+        }
+
         public string? Description { get; private set; }
 
-        public SpaService(string name, long priceInCents, int durationMinutes, string? description, DateTimeOffset now)
+        public SpaService(string name, long priceInCents, int durationMinutes, string? description)
         {
-            if (priceInCents < 0) 
-                throw new DomainValidationException("Price must be >= 0");
-            if (durationMinutes <= 0) 
-                throw new DomainValidationException("Duration must be > 0");
-
-            Id = Guid.NewGuid();
-            Name = string.IsNullOrWhiteSpace(name) ? throw new DomainValidationException("Name is required") : name.Trim();
+            Name = name;
             PriceInCents = priceInCents;
             DurationMinutes = durationMinutes;
-            Description = description?.Trim();
+            Description = description;
+        }
 
-            MarkCreated(now);
-        }
         public void ChangePrice(long newPriceInCents)
-        { 
-            if (newPriceInCents < 0) 
-                throw new DomainValidationException("Price must be >= 0"); 
-            
-            PriceInCents = newPriceInCents; 
-            
-            MarkUpdated(DateTimeOffset.UtcNow); 
+        {
+            PriceInCents = newPriceInCents;
+            MarkUpdated(DateTimeOffset.UtcNow);
         }
+
         public void ChangeDuration(int minutes)
-        { 
-            if (minutes <= 0) 
-                throw new DomainValidationException("Duration must be > 0"); 
-            
-            DurationMinutes = minutes; 
-            
-            MarkUpdated(DateTimeOffset.UtcNow); 
+        {
+            DurationMinutes = minutes;
+            MarkUpdated(DateTimeOffset.UtcNow);
         }
     }
 }

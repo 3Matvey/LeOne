@@ -2,22 +2,13 @@
 
 namespace LeOne.Domain.Entities
 {
-    public class User : AuditableEntity
+    public class User(PersonName name, Email email, PasswordHash password, UserRole role) 
+        : AuditableEntity()
     {
-        public PersonName Name { get; private set; }  
-        public Email Email { get; private set; } 
-        public PasswordHash Password { get; private set; } 
-        public UserRole Role { get; private set; }
-
-        public User(PersonName name, Email email, PasswordHash password, UserRole role, DateTimeOffset now)
-        {
-            Id = Guid.NewGuid();
-            Name = name;
-            Email = email;
-            Password = password;
-            Role = role;
-            MarkCreated(now);
-        }
+        public PersonName Name { get; private set; } = name;
+        public Email Email { get; private set; } = email;
+        public PasswordHash Password { get; private set; } = password;
+        public UserRole Role { get; private set; } = role;
 
         public void ChangeName(PersonName name)
         { 
