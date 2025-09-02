@@ -36,14 +36,28 @@
             PriceInCents = priceInCents;
             Description = description;
         }
-        public void ChangePrice(long newPriceInCents)
+
+        public static (Product product, ProductCreatedDomainEvent @event) Create(
+            string name,
+            long priceInCents,
+            string? description)
+        {
+            var product = new Product(name, priceInCents, description);
+            var @event = new ProductCreatedDomainEvent(product.Id);
+            return (product, @event);
+        }
+
+        public PriceChangedDomainEvent ChangePrice(long newPriceInCents)
         { 
             if (newPriceInCents < 0) 
                 throw new DomainValidationException("Price must be >= 0"); 
             
+            var oldPrice = PriceInCents;
             PriceInCents = newPriceInCents; 
             
-            MarkUpdated(DateTimeOffset.UtcNow); 
+            MarkUpdated(DateTimeOffset.UtcNow);
+
+            return new PriceChangedDomainEvent(Id, oldPrice, newPriceInCents);
         }
 
         public void MarkOrdered(DateTimeOffset at) => OrderedAt = at;
