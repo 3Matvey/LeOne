@@ -2,3 +2,4 @@
 
 global using LeOne.Domain.Shared;
 
+global using LeOne.Domain.DomainEvents;

@@ -51,10 +51,27 @@
             Description = description;
         }
 
-        public void ChangePrice(long newPriceInCents)
+        public static (SpaService spaService, SpaServiceCreatedDomainEvent @event) Create(
+            string name,
+            long priceInCents,
+            int durationMinutes,
+            string? description)
         {
+            var spaService = new SpaService(name, priceInCents, durationMinutes, description);
+            var @event = new SpaServiceCreatedDomainEvent(spaService.Id);
+            return (spaService, @event);
+        }
+
+        public PriceChangedDomainEvent ChangePrice(long newPriceInCents)
+        {
+            if (newPriceInCents < 0)
+                throw new DomainValidationException("Price must be >= 0");
+
+            var oldPrice = PriceInCents;
             PriceInCents = newPriceInCents;
             MarkUpdated(DateTimeOffset.UtcNow);
+
+            return new PriceChangedDomainEvent(Id, oldPrice, newPriceInCents);
         }
 
         public void ChangeDuration(int minutes)

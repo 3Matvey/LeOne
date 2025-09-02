@@ -5,7 +5,6 @@
         IUserRepository Users { get; }
         IProductRepository Products { get; }
         ISpaServiceRepository SpaService { get; }
-        ITransactionRepository Transactions { get; }
         IReviewRepository Reviews { get; } 
         Task SaveChangesAsync(CancellationToken ct = default);
         Task ExecuteInTransactionAsync(Func<CancellationToken, Task> action, CancellationToken ct = default); // для действий, затрагивающих несколько агрегатов
