@@ -6,4 +6,26 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Folder Include="Products\Commands\" />
+    <Folder Include="Products\Queries\" />
+    <Folder Include="Products\Dtos\" />
+    <Folder Include="Reviews\Commands\CreateSpaService\" />
+    <Folder Include="Reviews\Dtos\" />
+    <Folder Include="Reviews\Queries\" />
+    <Folder Include="Users\Commands\" />
+    <Folder Include="Users\Dtos\" />
+    <Folder Include="Users\Queries\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="14.0.0" />
+    <PackageReference Include="FluentValidation" Version="12.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.8" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\LeOne.Domain\LeOne.Domain.csproj" />
+  </ItemGroup>
+
 </Project>

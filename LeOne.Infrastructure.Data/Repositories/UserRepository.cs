@@ -4,5 +4,5 @@ using LeOne.Domain.Repositories;
 namespace LeOne.Infrastructure.Data.Repositories
 {
     public class UserRepository(AppDbContext context)
-        : EfRepository<User>(context), IUserRepository; 
+        : EfRepository<User>(context); 
 }
