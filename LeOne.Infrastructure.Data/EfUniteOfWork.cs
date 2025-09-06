@@ -1,4 +1,6 @@
-﻿using LeOne.Domain.Repositories;
+﻿using LeOne.Application.Common.Interfaces;
+using LeOne.Domain.Entities;
+using LeOne.Domain.Repositories;
 using LeOne.Infrastructure.Data.Repositories;
 
 namespace LeOne.Infrastructure.Data
@@ -7,15 +9,15 @@ namespace LeOne.Infrastructure.Data
     {
         private readonly AppDbContext _context = context;
 
-        private IUserRepository? _users;
-        private IProductRepository? _products;
-        private ISpaServiceRepository? _spaService;
-        private IReviewRepository? _reviews;
+        private IRepository<User>? _users;
+        private IRepository<Product>? _products;
+        private IRepository<SpaService>? _spaService;
+        private IRepository<Review>? _reviews;
 
-        public IUserRepository Users => _users ??= new UserRepository(_context);
-        public IProductRepository Products => _products ??= new ProductRepository(_context);
-        public ISpaServiceRepository SpaService => _spaService ??= new SpaServiceRepository(_context);
-        public IReviewRepository Reviews => _reviews ??= new ReviewRepository(_context);
+        public IRepository<User> Users => _users ??= new UserRepository(_context);
+        public IRepository<Product> Products => _products ??= new ProductRepository(_context);
+        public IRepository<SpaService> SpaService => _spaService ??= new SpaServiceRepository(_context);
+        public IRepository<Review> Reviews => _reviews ??= new ReviewRepository(_context);
 
         public async Task SaveChangesAsync(CancellationToken ct = default)
         {

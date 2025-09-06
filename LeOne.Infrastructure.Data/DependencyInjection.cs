@@ -1,4 +1,6 @@
-﻿using LeOne.Domain.Repositories;
+﻿using LeOne.Application.Common.Interfaces;
+using LeOne.Domain.Entities;
+using LeOne.Domain.Repositories;
 using LeOne.Infrastructure.Data.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -17,10 +19,10 @@ namespace LeOne.Infrastructure.Data
                     configuration.GetConnectionString("LeOneDatabase"))
             );
 
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IProductRepository, ProductRepository>();
-            services.AddScoped<IReviewRepository, ReviewRepository>();
-            services.AddScoped<ISpaServiceRepository, SpaServiceRepository>();
+            services.AddScoped<IRepository<User>, UserRepository>();
+            services.AddScoped<IRepository<Product>, ProductRepository>();
+            services.AddScoped<IRepository<Review>, ReviewRepository>();
+            services.AddScoped<IRepository<SpaService>, SpaServiceRepository>();
 
             services.AddScoped<IUnitOfWork, EfUnitOfWork>();
 

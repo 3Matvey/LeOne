@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LeOne.Application\LeOne.Application.csproj" />
     <ProjectReference Include="..\LeOne.Domain\LeOne.Domain.csproj" />
   </ItemGroup>
 
