@@ -29,6 +29,8 @@
         public string? Description { get; private set; }
         public DateTimeOffset? OrderedAt { get; private set; }
 
+        private Product() { }
+
         public Product(string name, long priceInCents, string? description)
             : base()
         {

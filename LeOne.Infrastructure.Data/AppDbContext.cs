@@ -14,6 +14,8 @@ namespace LeOne.Infrastructure.Data
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.HasDefaultSchema("leone");
+
             // SpaService configuration
             modelBuilder.Entity<SpaService>(entity =>
             {

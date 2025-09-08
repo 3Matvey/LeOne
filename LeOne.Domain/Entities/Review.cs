@@ -20,12 +20,14 @@
 
         public string? Description { get; private set; }
 
-        public Review(Guid byUserId, Guid transactionId, TransactionType type, byte mark, string? description)
+        private Review() { }
+
+        public Review(Guid byUserId, Guid transactionId, TransactionType transactionType, byte mark, string? description)
             : base()
         {
             ByUserId = byUserId;
             TransactionId = transactionId;
-            TransactionType = type;
+            TransactionType = transactionType;
             Mark = mark;
             Description = description;
         }

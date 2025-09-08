@@ -43,7 +43,10 @@
 
         public string? Description { get; private set; }
 
+        private SpaService() { }
+
         public SpaService(string name, long priceInCents, int durationMinutes, string? description)
+            : base()
         {
             Name = name;
             PriceInCents = priceInCents;
