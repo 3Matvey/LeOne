@@ -52,8 +52,8 @@ public class ListSpaServiceHandler(IUnitOfWork unitOfWork, IMapper mapper)
         // MinPrice
         if (request.MinPriceInCents.HasValue)
         {
-            var prop = Expression.Property(param, nameof(SpaService.PriceInCents));
-            var value = Expression.Constant(request.MinPriceInCents);
+            var prop = Expression.Property(param, nameof(SpaService.PriceInCents)); 
+            var value = Expression.Constant(request.MinPriceInCents.Value, typeof(long));
             var comparison = Expression.GreaterThanOrEqual(prop, value);
             body = body == null ? comparison : Expression.AndAlso(body, comparison);
         }
@@ -61,8 +61,8 @@ public class ListSpaServiceHandler(IUnitOfWork unitOfWork, IMapper mapper)
         // MaxPrice
         if (request.MaxPriceInCents.HasValue)
         {
-            var prop = Expression.Property(param, nameof(SpaService.PriceInCents));
-            var value = Expression.Constant(request.MaxPriceInCents);
+            var prop = Expression.Property(param, nameof(SpaService.PriceInCents)); 
+            var value = Expression.Constant(request.MaxPriceInCents.Value, typeof(long));
             var comparison = Expression.LessThanOrEqual(prop, value);
             body = body == null ? comparison : Expression.AndAlso(body, comparison);
         }
@@ -71,7 +71,7 @@ public class ListSpaServiceHandler(IUnitOfWork unitOfWork, IMapper mapper)
         if (request.MinDuration.HasValue)
         {
             var prop = Expression.Property(param, nameof(SpaService.DurationMinutes));
-            var value = Expression.Constant(request.MinDuration);
+            var value = Expression.Constant(request.MinDuration.Value, typeof(int));
             var comparison = Expression.GreaterThanOrEqual(prop, value);
             body = body == null ? comparison : Expression.AndAlso(body, comparison);
         }
@@ -80,14 +80,11 @@ public class ListSpaServiceHandler(IUnitOfWork unitOfWork, IMapper mapper)
         if (request.MaxDuration.HasValue)
         {
             var prop = Expression.Property(param, nameof(SpaService.DurationMinutes));
-            var value = Expression.Constant(request.MaxDuration);
+            var value = Expression.Constant(request.MaxDuration.Value, typeof(int));
             var comparison = Expression.LessThanOrEqual(prop, value);
             body = body == null ? comparison : Expression.AndAlso(body, comparison);
         }
 
-        if (body == null)
-            return null;
-
-        return Expression.Lambda<Func<SpaService, bool>>(body, param);
+        return body is null ? null : Expression.Lambda<Func<SpaService, bool>>(body, param);
     }
 }

@@ -6,10 +6,10 @@ using LeOne.Application.SpaServices.Dtos;
 
 namespace LeOne.Application.SpaServices.Commands.UpdateSpaService
 {
-    public sealed class ChangePriceHandler(IUnitOfWork uow, IValidator<ChangePriceCommand> validator, IMapper mapper)
-        : IChangePrice
+    public sealed class ChangeSpaServicePriceHandler(IUnitOfWork uow, IValidator<ChangeSpaServicePriceCommand> validator, IMapper mapper)
+        : IChangeSpaServicePrice
     {
-        public async Task<Result<SpaServiceDto>> HandleAsync(ChangePriceCommand cmd, CancellationToken ct = default)
+        public async Task<Result<SpaServiceDto>> HandleAsync(ChangeSpaServicePriceCommand cmd, CancellationToken ct = default)
         {
             var vr = await validator.ValidateAsync(cmd, ct);
             if (!vr.IsValid)

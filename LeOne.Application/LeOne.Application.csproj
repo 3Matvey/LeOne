@@ -7,9 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="Products\Commands\" />
-    <Folder Include="Products\Queries\" />
-    <Folder Include="Products\Dtos\" />
     <Folder Include="Reviews\Commands\CreateSpaService\" />
     <Folder Include="Reviews\Dtos\" />
     <Folder Include="Reviews\Queries\" />
