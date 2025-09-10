@@ -1,5 +1,3 @@
-using LeOne.Domain.Entities;
-
 namespace LeOne.Application.SpaServices.Queries.ListSpaService;
 
 public record ListSpaServiceQuery(

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LeOne.Application.Products.Dtos;
 using LeOne.Application.SpaServices.Dtos;
 using LeOne.Domain.Entities;
 
@@ -10,6 +11,9 @@ namespace LeOne.Application.Common.Mappings
         {
             // SpaService
             CreateMap<SpaService, SpaServiceDto>();
+
+            // Product
+            CreateMap<Product, ProductDto>();
         }
     }
 }

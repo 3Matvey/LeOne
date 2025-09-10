@@ -3,8 +3,8 @@ using LeOne.Application.SpaServices.Dtos;
 
 namespace LeOne.Application.SpaServices.Commands.UpdateSpaService
 {
-    public interface IChangePrice
+    public interface IChangeSpaServicePrice
     {
-        Task<Result<SpaServiceDto>> HandleAsync(ChangePriceCommand cmd, CancellationToken ct = default);
+        Task<Result<SpaServiceDto>> HandleAsync(ChangeSpaServicePriceCommand cmd, CancellationToken ct = default);
     }
 }
