@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 using LeOne.Application.SpaServices.Commands.CreateSpaService;
 using LeOne.Application.SpaServices.Dtos;
 using LeOne.Application.SpaServices.Queries.ListSpaService;
-using Xunit;
 
 namespace LeOne.API.E2ETests;
 

@@ -1,5 +1,4 @@
-﻿using LeOne.Application.Common.Interfaces;
-using LeOne.Domain.Repositories;
+﻿using LeOne.Domain.Repositories;
 using LeOne.Domain.Shared;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;

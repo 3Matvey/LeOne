@@ -11,7 +11,7 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
 {
     protected override void ConfigureWebHost(IWebHostBuilder builder)
     {
-        builder.UseEnvironment("Testing");
+        builder.UseEnvironment("Local");
 
         builder.ConfigureServices(services =>
         {
@@ -24,15 +24,15 @@ internal class CustomWebApplicationFactory : WebApplicationFactory<Program>
                 services.Remove(d);
 
             var sp = services.BuildServiceProvider();
-            using var scope = sp.CreateScope();
+            sp.CreateScope();
 
             var cfg = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.Test.json", optional: true)
+            .AddJsonFile("appsettings.Local.json", optional: true)
             .AddEnvironmentVariables()
             .Build();
 
             var connectionString = cfg.GetSection("LocalDbConnection")["leone"]
-                ?? throw new InvalidOperationException("Connection string LocalDbConnection:leone not found in appsettings.Test.json");
+                ?? throw new InvalidOperationException("Connection string LocalDbConnection:leone not found in appsettings.Local.json");
 
             services.AddDbContext<AppDbContext>(o =>
                 o.UseNpgsql(connectionString));

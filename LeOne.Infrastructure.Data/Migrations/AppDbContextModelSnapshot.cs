@@ -120,6 +120,14 @@ namespace LeOne.Infrastructure.Data.Migrations
                     b.Property<DateTimeOffset>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<int>("Role")
                         .HasColumnType("integer");
 
@@ -140,9 +148,13 @@ namespace LeOne.Infrastructure.Data.Migrations
 
                             b1.Property<string>("Value")
                                 .IsRequired()
-                                .HasColumnType("text");
+                                .HasColumnType("text")
+                                .HasColumnName("Email_Value");
 
                             b1.HasKey("UserId");
+
+                            b1.HasIndex("Value")
+                                .IsUnique();
 
                             b1.ToTable("Users", "leone");
 
@@ -171,31 +183,7 @@ namespace LeOne.Infrastructure.Data.Migrations
                                 .HasForeignKey("UserId");
                         });
 
-                    b.OwnsOne("LeOne.Domain.ValueObjects.PersonName", "Name", b1 =>
-                        {
-                            b1.Property<Guid>("UserId")
-                                .HasColumnType("uuid");
-
-                            b1.Property<string>("FirstName")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.Property<string>("LastName")
-                                .IsRequired()
-                                .HasColumnType("text");
-
-                            b1.HasKey("UserId");
-
-                            b1.ToTable("Users", "leone");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
                     b.Navigation("Email")
-                        .IsRequired();
-
-                    b.Navigation("Name")
                         .IsRequired();
 
                     b.Navigation("Password")

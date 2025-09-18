@@ -1,8 +1,6 @@
 ﻿using System.Data;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 using Npgsql;
-using Xunit;
 
 [CollectionDefinition("E2E Database", DisableParallelization = true)]
 public class E2EDatabaseCollection : ICollectionFixture<DbCleanupFixture> { }
@@ -29,12 +27,12 @@ public class DbCleanupFixture : IAsyncLifetime
     public DbCleanupFixture()
     {
         var cfg = new ConfigurationBuilder()
-            .AddJsonFile("appsettings.Test.json", optional: true)
+            .AddJsonFile("appsettings.Local.json", optional: true)
             .AddEnvironmentVariables()
             .Build();
 
         _connectionString = cfg.GetSection("LocalDbConnection")["leone"]
-            ?? throw new InvalidOperationException("Connection string LocalDbConnection:leone not found in appsettings.Test.json");
+            ?? throw new InvalidOperationException("Connection string LocalDbConnection:leone not found in appsettings.Local.json");
     }
 
     public async Task InitializeAsync()
