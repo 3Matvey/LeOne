@@ -1,7 +1,5 @@
-
-
 # Create migrations
-dotnet ef migrations add InitialCreate --project LeOne.Infrastructure.Data --startup-project LeOne.API
+dotnet ef migrations add MigrationName --project LeOne.Infrastructure.Data
 
 
 # Run migrations

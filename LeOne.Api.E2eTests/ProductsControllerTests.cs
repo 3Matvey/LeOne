@@ -3,7 +3,6 @@ using System.Net.Http.Json;
 using LeOne.Application.Products.Commands.CreateProduct;
 using LeOne.Application.Products.Dtos;
 using LeOne.Application.Products.Queries.ListProduct;
-using Xunit;
 
 namespace LeOne.API.E2ETests;
 

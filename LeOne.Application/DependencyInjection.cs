@@ -1,4 +1,7 @@
 ﻿using FluentValidation;
+using LeOne.Application.Auth.Commands.Login;
+using LeOne.Application.Auth.Commands.Refresh;
+using LeOne.Application.Auth.Commands.Register;
 using LeOne.Application.Common.Mappings;
 using LeOne.Application.Products.Commands.CreateProduct;
 using LeOne.Application.Products.Commands.DeleteProduct;
@@ -44,6 +47,11 @@ namespace LeOne.Application
             services.AddScoped<IDeleteProduct, DeleteProductHandler>();
             services.AddScoped<GetProductByIdHandler>();
             services.AddScoped<ListProductHandler>();
+
+
+            services.AddScoped<IRegisterUser, RegisterUserHandler>();
+            services.AddScoped<ILoginUser, LoginUserHandler>();
+            services.AddScoped<IRefreshToken, RefreshTokenHandler>();
 
             return services;
         }

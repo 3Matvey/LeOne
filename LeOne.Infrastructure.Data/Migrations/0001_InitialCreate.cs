@@ -75,8 +75,8 @@ namespace LeOne.Infrastructure.Data.Migrations
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Name_FirstName = table.Column<string>(type: "text", nullable: false),
-                    Name_LastName = table.Column<string>(type: "text", nullable: false),
+                    FirstName = table.Column<string>(type: "text", nullable: false),
+                    LastName = table.Column<string>(type: "text", nullable: false),
                     Email_Value = table.Column<string>(type: "text", nullable: false),
                     Password_Hash = table.Column<string>(type: "text", nullable: false),
                     Password_Salt = table.Column<string>(type: "text", nullable: false),
@@ -88,6 +88,13 @@ namespace LeOne.Infrastructure.Data.Migrations
                 {
                     table.PrimaryKey("PK_Users", x => x.Id);
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email_Value",
+                schema: "leone",
+                table: "Users",
+                column: "Email_Value",
+                unique: true);
         }
 
         /// <inheritdoc />

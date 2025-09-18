@@ -87,20 +87,21 @@ namespace LeOne.Infrastructure.Data
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever();
 
-                entity.OwnsOne(e => e.Name, name =>
-                {
-                    name.Property(n => n.FirstName)
-                        .IsRequired();
+                entity.Property(e => e.FirstName)
+                      .IsRequired();
 
-                    name.Property(n => n.LastName)
-                        .IsRequired();
-                });
+                entity.Property(e => e.LastName)
+                      .IsRequired();
 
                 entity.OwnsOne(e => e.Email, email =>
                 {
-                    email.Property(e => e.Value)
+                    email.Property(p => p.Value)
+                         .HasColumnName("Email_Value")
                          .IsRequired();
+
+                    email.HasIndex(p => p.Value).IsUnique();
                 });
+
 
                 entity.OwnsOne(e => e.Password, password =>
                 {

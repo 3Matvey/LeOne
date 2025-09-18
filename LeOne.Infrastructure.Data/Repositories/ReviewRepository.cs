@@ -1,5 +1,4 @@
 ﻿using LeOne.Domain.Entities;
-using LeOne.Domain.Repositories;
 
 namespace LeOne.Infrastructure.Data.Repositories
 {
