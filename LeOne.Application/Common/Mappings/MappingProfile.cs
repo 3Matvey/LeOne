@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LeOne.Application.Products.Dtos;
 using LeOne.Application.SpaServices.Dtos;
+using LeOne.Application.Reviews.Dtos;
 using LeOne.Domain.Entities;
 
 namespace LeOne.Application.Common.Mappings
@@ -14,6 +15,9 @@ namespace LeOne.Application.Common.Mappings
 
             // Product
             CreateMap<Product, ProductDto>();
+
+            // Review
+            CreateMap<Review, ReviewDto>();
         }
     }
 }

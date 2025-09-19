@@ -13,6 +13,11 @@ using LeOne.Application.SpaServices.Commands.DeleteSpaService;
 using LeOne.Application.SpaServices.Commands.UpdateSpaService;
 using LeOne.Application.SpaServices.Queries.GetSpaServiceById;
 using LeOne.Application.SpaServices.Queries.ListSpaService;
+using LeOne.Application.Reviews.Commands.CreateReview;
+using LeOne.Application.Reviews.Commands.DeleteReview;
+using LeOne.Application.Reviews.Commands.UpdateReview;
+using LeOne.Application.Reviews.Queries.GetReviewById;
+using LeOne.Application.Reviews.Queries.ListReview;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LeOne.Application
@@ -47,6 +52,16 @@ namespace LeOne.Application
             services.AddScoped<IDeleteProduct, DeleteProductHandler>();
             services.AddScoped<GetProductByIdHandler>();
             services.AddScoped<ListProductHandler>();
+
+            // Reviews
+            services.AddScoped<IValidator<CreateReviewCommand>, CreateReviewValidator>();
+            services.AddScoped<IValidator<UpdateReviewCommand>, UpdateReviewValidator>();
+
+            services.AddScoped<ICreateReview, CreateReviewHandler>();
+            services.AddScoped<IUpdateReview, UpdateReviewHandler>();
+            services.AddScoped<IDeleteReview, DeleteReviewHandler>();
+            services.AddScoped<GetReviewByIdHandler>();
+            services.AddScoped<ListReviewHandler>();
 
 
             services.AddScoped<IRegisterUser, RegisterUserHandler>();
