@@ -64,13 +64,7 @@ namespace LeOne.Infrastructure.Data
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever();
 
-                entity.Property(e => e.ByUserId)
-                      .IsRequired();
-
-                entity.Property(e => e.TransactionId)
-                      .IsRequired();
-
-                entity.Property(e => e.TransactionType)
+                  entity.Property(e => e.EntityId)
                       .IsRequired();
 
                 entity.Property(e => e.Mark)

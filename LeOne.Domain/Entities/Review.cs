@@ -2,10 +2,7 @@
 {
     public class Review : AuditableEntity
     {
-        public Guid ByUserId { get; private set; }
-        public Guid TransactionId { get; private set; }
-        public TransactionType TransactionType { get; private set; }
-
+        public Guid EntityId { get; private set; }
         private byte _mark;
         public byte Mark
         {
@@ -22,12 +19,10 @@
 
         private Review() { }
 
-        public Review(Guid byUserId, Guid transactionId, TransactionType transactionType, byte mark, string? description)
+        public Review(Guid entityId, byte mark, string? description)
             : base()
         {
-            ByUserId = byUserId;
-            TransactionId = transactionId;
-            TransactionType = transactionType;
+            EntityId = entityId;
             Mark = mark;
             Description = description;
         }
