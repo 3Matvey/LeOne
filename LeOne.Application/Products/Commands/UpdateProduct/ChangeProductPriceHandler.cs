@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using LeOne.Application.Common;
 using LeOne.Application.Common.Interfaces;
 using LeOne.Application.Common.Results;
 using LeOne.Application.Products.Dtos;
 
 namespace LeOne.Application.Products.Commands.UpdateProduct
 {
-    public sealed class ChangeProductPriceHandler(IUnitOfWork uow, IValidator<ChangeProductPriceCommand> validator, IMapper mapper)
+    public sealed class ChangeProductPriceHandler(IUnitOfWork uow, IValidator<ChangeProductPriceCommand> validator, IDomainEventBus bus, IMapper mapper)
         : IChangeProductPrice
     {
         public async Task<Result<ProductDto>> HandleAsync(ChangeProductPriceCommand cmd, CancellationToken ct = default)
@@ -21,12 +22,12 @@ namespace LeOne.Application.Products.Commands.UpdateProduct
 
             try
             {
+                var @event = entity.ChangePrice(cmd.NewPriceInCents);
+
                 await uow.ExecuteInTransactionAsync(async innerCt =>
                 {
-                    entity.ChangePrice(cmd.NewPriceInCents);
                     await uow.Products.UpdateAsync(entity, innerCt);
-                    // TODO
-                }, ct);
+                }, ct).PublishIfOk(bus, @event, ct);
 
                 var dto = mapper.Map<ProductDto>(entity);
 

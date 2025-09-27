@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using LeOne.Application.Common;
 using LeOne.Application.Common.Interfaces;
 using LeOne.Application.Common.Results;
 using LeOne.Application.SpaServices.Dtos;
@@ -7,7 +8,7 @@ using LeOne.Domain.Entities;
 
 namespace LeOne.Application.SpaServices.Commands.CreateSpaService
 {
-    public sealed class CreateSpaServiceHandler(IUnitOfWork uow, IValidator<CreateSpaServiceCommand> validator, IMapper mapper)
+    public sealed class CreateSpaServiceHandler(IUnitOfWork uow, IValidator<CreateSpaServiceCommand> validator, IDomainEventBus bus, IMapper mapper)
         : ICreateSpaService
     {
         public async Task<Result<SpaServiceDto>> HandleAsync(CreateSpaServiceCommand cmd, CancellationToken ct = default)
@@ -20,10 +21,8 @@ namespace LeOne.Application.SpaServices.Commands.CreateSpaService
                 
             await uow.ExecuteInTransactionAsync(async innerCt =>
             {
-                // TODO Events are not processed, determine the model for event storage.
-
                 await uow.SpaService.AddAsync(spaService, innerCt);
-            }, ct);
+            }, ct).PublishIfOk(bus, ct, createdEvent);
 
             var dto = mapper.Map<SpaServiceDto>(spaService);
 

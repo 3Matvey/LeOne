@@ -74,7 +74,10 @@
             PriceInCents = newPriceInCents;
             MarkUpdated(DateTimeOffset.UtcNow);
 
-            return new PriceChangedDomainEvent(Id, oldPrice, newPriceInCents);
+            return new PriceChangedDomainEvent(Id, oldPrice, newPriceInCents)
+            {
+                Description = $"{Name} price changed"
+            };
         }
 
         public void ChangeDuration(int minutes)
