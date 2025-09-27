@@ -1,12 +1,13 @@
 ﻿using AutoMapper;
 using FluentValidation;
+using LeOne.Application.Common;
 using LeOne.Application.Common.Interfaces;
 using LeOne.Application.Common.Results;
 using LeOne.Application.SpaServices.Dtos;
 
 namespace LeOne.Application.SpaServices.Commands.UpdateSpaService
 {
-    public sealed class ChangeSpaServicePriceHandler(IUnitOfWork uow, IValidator<ChangeSpaServicePriceCommand> validator, IMapper mapper)
+    public sealed class ChangeSpaServicePriceHandler(IUnitOfWork uow, IValidator<ChangeSpaServicePriceCommand> validator, IDomainEventBus bus, IMapper mapper)
         : IChangeSpaServicePrice
     {
         public async Task<Result<SpaServiceDto>> HandleAsync(ChangeSpaServicePriceCommand cmd, CancellationToken ct = default)
@@ -21,12 +22,12 @@ namespace LeOne.Application.SpaServices.Commands.UpdateSpaService
 
             try
             {
+                var priceChangedEvent = entity.ChangePrice(cmd.NewPriceInCents);
+
                 await uow.ExecuteInTransactionAsync(async innerCt =>
                 {
-                    entity.ChangePrice(cmd.NewPriceInCents);
                     await uow.SpaService.UpdateAsync(entity, innerCt);
-                    // TODO
-                }, ct);
+                }, ct).PublishIfOk(bus, ct, priceChangedEvent);
 
                 var dto = mapper.Map<SpaServiceDto>(entity);
 

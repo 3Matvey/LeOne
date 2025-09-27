@@ -8,9 +8,9 @@ namespace LeOne.Application.Common.Interfaces
         IRepository<User> Users { get; }
         IRepository<Product> Products { get; }
         IRepository<SpaService> SpaService { get; }
-        IRepository<Review> Reviews { get; } 
+        IRepository<Review> Reviews { get; }
         Task SaveChangesAsync(CancellationToken ct = default);
-        Task ExecuteInTransactionAsync(Func<CancellationToken, Task> action, CancellationToken ct = default); 
+        Task<bool> ExecuteInTransactionAsync(Func<CancellationToken, Task> action, CancellationToken ct = default);
     }
 }
     

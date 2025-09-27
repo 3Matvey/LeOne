@@ -24,18 +24,30 @@ namespace LeOne.Infrastructure.Data
             await _context.SaveChangesAsync(ct);
         }
 
-        public async Task ExecuteInTransactionAsync(Func<CancellationToken, Task> action, CancellationToken ct = default)
+        public async Task<bool> ExecuteInTransactionAsync(
+            Func<CancellationToken, Task> action,
+            CancellationToken ct = default)
         {
+            ArgumentNullException.ThrowIfNull(action);
+
             await using var transaction = await _context.Database.BeginTransactionAsync(ct);
+
             try
             {
                 await action(ct);
                 await _context.SaveChangesAsync(ct);
-                await transaction.CommitAsync(ct);
+
+                await transaction.CommitAsync(CancellationToken.None);
+                return true;
+            }
+            catch (OperationCanceledException) when (ct.IsCancellationRequested)
+            {
+                await transaction.RollbackAsync(CancellationToken.None);
+                throw;
             }
             catch
             {
-                await transaction.RollbackAsync(ct);
+                await transaction.RollbackAsync(CancellationToken.None);
                 throw;
             }
         }

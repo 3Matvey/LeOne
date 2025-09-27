@@ -3,5 +3,8 @@
     public sealed record PriceChangedDomainEvent(
         Guid ChangedEntityId,
         long OldPriceInCents,
-        long NewPriceInCents) : DomainEvent;
+        long NewPriceInCents) : DomainEvent
+    {
+        public string? Description { get; init; }
+    }
 }

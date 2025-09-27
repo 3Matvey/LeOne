@@ -2,22 +2,23 @@
 using LeOne.Application.Auth.Commands.Login;
 using LeOne.Application.Auth.Commands.Refresh;
 using LeOne.Application.Auth.Commands.Register;
+using LeOne.Application.Common.DomainEvents;
 using LeOne.Application.Common.Mappings;
 using LeOne.Application.Products.Commands.CreateProduct;
 using LeOne.Application.Products.Commands.DeleteProduct;
 using LeOne.Application.Products.Commands.UpdateProduct;
 using LeOne.Application.Products.Queries.GetProductById;
 using LeOne.Application.Products.Queries.ListProduct;
-using LeOne.Application.SpaServices.Commands.CreateSpaService;
-using LeOne.Application.SpaServices.Commands.DeleteSpaService;
-using LeOne.Application.SpaServices.Commands.UpdateSpaService;
-using LeOne.Application.SpaServices.Queries.GetSpaServiceById;
-using LeOne.Application.SpaServices.Queries.ListSpaService;
 using LeOne.Application.Reviews.Commands.CreateReview;
 using LeOne.Application.Reviews.Commands.DeleteReview;
 using LeOne.Application.Reviews.Commands.UpdateReview;
 using LeOne.Application.Reviews.Queries.GetReviewById;
 using LeOne.Application.Reviews.Queries.ListReview;
+using LeOne.Application.SpaServices.Commands.CreateSpaService;
+using LeOne.Application.SpaServices.Commands.DeleteSpaService;
+using LeOne.Application.SpaServices.Commands.UpdateSpaService;
+using LeOne.Application.SpaServices.Queries.GetSpaServiceById;
+using LeOne.Application.SpaServices.Queries.ListSpaService;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace LeOne.Application
@@ -27,6 +28,8 @@ namespace LeOne.Application
         public static IServiceCollection AddApplicationServices(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(MappingProfile).Assembly);
+
+            services.AddSingleton<IDomainEventTypeProvider, HardcodedDomainEventTypeProvider>();
 
             // Spa Service
             // Validators
