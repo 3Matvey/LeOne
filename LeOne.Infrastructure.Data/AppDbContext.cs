@@ -64,13 +64,21 @@ namespace LeOne.Infrastructure.Data
                 entity.Property(e => e.Id)
                     .ValueGeneratedNever();
 
-                  entity.Property(e => e.EntityId)
+                entity.Property(e => e.EntityId)
+                      .IsRequired();
+
+                entity.Property(e => e.CreatedByUserId)
                       .IsRequired();
 
                 entity.Property(e => e.Mark)
                       .IsRequired();
 
                 entity.Property(e => e.Description);
+
+                entity.HasOne<User>()
+                      .WithMany()
+                      .HasForeignKey(e => e.CreatedByUserId)
+                      .OnDelete(DeleteBehavior.Restrict);
             });
 
             // User configuration

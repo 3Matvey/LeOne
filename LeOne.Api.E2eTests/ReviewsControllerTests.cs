@@ -4,6 +4,11 @@ using LeOne.Application.Reviews.Commands.CreateReview;
 using LeOne.Application.Reviews.Commands.UpdateReview;
 using LeOne.Application.Reviews.Dtos;
 using LeOne.Application.Reviews.Queries.ListReview;
+using LeOne.Domain.Entities;
+using LeOne.Domain.Shared;
+using LeOne.Domain.ValueObjects;
+using LeOne.Infrastructure.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace LeOne.API.E2ETests;
 
@@ -18,7 +23,8 @@ public class ReviewsControllerTests
         using var factory = new CustomWebApplicationFactory();
         var client = factory.CreateClient();
 
-        var cmd = new CreateReviewCommand(Guid.NewGuid(), 5, "Great");
+        var userId = await CreateUserAsync(factory);
+        var cmd = new CreateReviewCommand(Guid.NewGuid(), userId, 5, "Great");
         var response = await client.PostAsJsonAsync("/api/Reviews", cmd);
 
         Assert.Equal(HttpStatusCode.Created, response.StatusCode);
@@ -35,7 +41,8 @@ public class ReviewsControllerTests
         var client = factory.CreateClient();
 
         var entityId = Guid.NewGuid();
-        var cmd = new CreateReviewCommand(entityId, 4, "Nice");
+        var userId = await CreateUserAsync(factory);
+        var cmd = new CreateReviewCommand(entityId, userId, 4, "Nice");
         var createResp = await client.PostAsJsonAsync("/api/Reviews", cmd);
         var created = await createResp.Content.ReadFromJsonAsync<CreateReviewResponse>();
         var id = created!.ReviewDto.Id;
@@ -61,9 +68,10 @@ public class ReviewsControllerTests
         var baselineCount = baselineBody!.TotalCount;
 
         var entityId = Guid.NewGuid();
-        await client.PostAsJsonAsync("/api/Reviews", new CreateReviewCommand(entityId, 1, null));
-        await client.PostAsJsonAsync("/api/Reviews", new CreateReviewCommand(entityId, 2, null));
-        await client.PostAsJsonAsync("/api/Reviews", new CreateReviewCommand(entityId, 3, null));
+        var userId = await CreateUserAsync(factory);
+        await client.PostAsJsonAsync("/api/Reviews", new CreateReviewCommand(entityId, userId, 1, null));
+        await client.PostAsJsonAsync("/api/Reviews", new CreateReviewCommand(entityId, userId, 2, null));
+        await client.PostAsJsonAsync("/api/Reviews", new CreateReviewCommand(entityId, userId, 3, null));
 
         var expectedTotal = baselineCount + 3;
 
@@ -87,7 +95,8 @@ public class ReviewsControllerTests
         var client = factory.CreateClient();
 
         var entityId = Guid.NewGuid();
-        var createResp = await client.PostAsJsonAsync("/api/Reviews", new CreateReviewCommand(entityId, 2, "ok"));
+        var userId = await CreateUserAsync(factory);
+        var createResp = await client.PostAsJsonAsync("/api/Reviews", new CreateReviewCommand(entityId, userId, 2, "ok"));
         var created = await createResp.Content.ReadFromJsonAsync<CreateReviewResponse>();
         var id = created!.ReviewDto.Id;
 
@@ -106,7 +115,8 @@ public class ReviewsControllerTests
         using var factory = new CustomWebApplicationFactory();
         var client = factory.CreateClient();
 
-        var createResp = await client.PostAsJsonAsync("/api/Reviews", new CreateReviewCommand(Guid.NewGuid(), 3, null));
+        var userId = await CreateUserAsync(factory);
+        var createResp = await client.PostAsJsonAsync("/api/Reviews", new CreateReviewCommand(Guid.NewGuid(), userId, 3, null));
         var created = await createResp.Content.ReadFromJsonAsync<CreateReviewResponse>();
         var id = created!.ReviewDto.Id;
 
@@ -115,5 +125,23 @@ public class ReviewsControllerTests
 
         var getResp = await client.GetAsync($"/api/Reviews/{id}");
         Assert.Equal(HttpStatusCode.NotFound, getResp.StatusCode);
+    }
+
+    private static async Task<Guid> CreateUserAsync(CustomWebApplicationFactory factory)
+    {
+        using var scope = factory.Services.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        var user = new User(
+            "Test",
+            "User",
+            Email.Create($"test{Guid.NewGuid():N}@example.com"),
+            PasswordHash.Create("hash", "salt"),
+            UserRole.User);
+
+        db.Users.Add(user);
+        await db.SaveChangesAsync();
+
+        return user.Id;
     }
 }

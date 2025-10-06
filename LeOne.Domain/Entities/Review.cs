@@ -3,6 +3,8 @@
     public class Review : AuditableEntity
     {
         public Guid EntityId { get; private set; }
+        public Guid CreatedByUserId { get; private set; }
+
         private byte _mark;
         public byte Mark
         {
@@ -19,12 +21,13 @@
 
         private Review() { }
 
-        public Review(Guid entityId, byte mark, string? description)
+        public Review(Guid entityId, Guid createdByUserId, byte mark, string? description)
             : base()
         {
             EntityId = entityId;
             Mark = mark;
             Description = description;
+            CreatedByUserId = createdByUserId;
         }
         public void Edit(byte mark, string? description)
         {
