@@ -16,7 +16,7 @@ namespace LeOne.Application.Reviews.Commands.CreateReview
             if (!vr.IsValid)
                 return Error.BadRequest("Review.Create.BadRequest", vr.ToString());
 
-            var review = new Review(cmd.EntityId, cmd.Mark, cmd.Description);
+            var review = new Review(cmd.EntityId, cmd.CreatedByUserId, cmd.Mark, cmd.Description);
 
             await uow.ExecuteInTransactionAsync(async innerCt =>
             {
